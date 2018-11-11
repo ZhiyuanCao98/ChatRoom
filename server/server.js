@@ -15,14 +15,13 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
   console.log('New user connected!');
 
-  socket.emit('newMessage', {
-    from: 'Ivan',
-    text: 'Control ...',
-    createdAt: 123123
-  });
-  
-  socket.on('createMessage', (m) => {
-    console.log('Created message', m);
+    socket.on('createMessage', (m) => {
+      console.log('Created message', m);
+      io.emit('newMessage', {
+        from: m.from,
+        text: m.text,
+        createdAt: new Date().getTime()
+      });
   });
 
   // When you colse the tab in the browser which exit the server
