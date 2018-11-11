@@ -15,13 +15,29 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
   console.log('New user connected!');
 
-    socket.on('createMessage', (m) => {
-      console.log('Created message', m);
-      io.emit('newMessage', {
-        from: m.from,
-        text: m.text,
-        createdAt: new Date().getTime()
-      });
+  // when a user join chat room, greeting individual user
+  socket.emit('newMessage', {
+    from: 'Admin',
+    text: 'Welcome to the chat app'
+  });
+
+  // brodcaset everyone know new user join
+  socket.broadcast.emit('newMessage', {
+    from: 'Admin',
+    text: 'New user joined',
+    createdAt: new Date().getTime()
+  });
+
+
+  socket.on('createMessage', (m) => {
+    console.log('Created message', m);
+    io.emit('newMessage', {
+      from: m.from,
+      text: m.text,
+      createdAt: new Date().getTime()
+    });
+
+
   });
 
   // When you colse the tab in the browser which exit the server
