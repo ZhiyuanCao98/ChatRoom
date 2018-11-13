@@ -23,11 +23,10 @@ io.on('connection', (socket) => {
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joind'));
 
 
-  socket.on('createMessage', (m) => {
+  socket.on('createMessage', (m, callback) => {
     console.log('Created message', m);
     io.emit('newMessage', generateMessage(m.from, m.text));
-
-
+    callback('Thi is Cool!');
   });
 
   // When you colse the tab in the browser which exit the server
