@@ -17,7 +17,7 @@ io.on('connection', (socket) => {
   console.log('New user connected!');
 
   // when a user join chat room, greeting individual user
-  socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat room'));
+  socket.emit('newMessage', generateMessage('Admin', 'Welcome to the Zhiyuan chat room'));
 
   // brodcaset everyone know new user join
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joind'));
