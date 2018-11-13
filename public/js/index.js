@@ -35,4 +35,6 @@ jQuery('#message-form').on('submit', function(e) {
   }, function() {
 
   });
+
+  jQuery('[name=message]').val("");
 });
