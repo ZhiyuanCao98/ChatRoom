@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 
-const {generateMessage} = require('./utils/message');
+const {generateMessage, generateLocationMessage} = require('./utils/message');
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
 var app = express();
@@ -29,6 +29,10 @@ io.on('connection', (socket) => {
     callback('Thi is Cool!');
   });
 
+  socket.on('createLocationMessage', (coords) => {
+    io.emit('newLocationMessage',
+    generateLocationMessage('User', coords.latitude, coords.longitude));
+  });
   // When you colse the tab in the browser which exit the server
   // you will get the message in your termial
   socket.on('disconnect', () => {
