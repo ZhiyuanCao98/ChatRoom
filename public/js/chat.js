@@ -19,6 +19,8 @@ function scrollToBottom () {
 socket.on('connect', function() {
   console.log('Connected to server');
   var params = jQuery.deparam(window.location.search);
+  params.room = params.room.toLowerCase();
+  console.log(`Room's name ${params.room}`);
   socket.emit('join', params, function(err) {
     if (err) {
       alert(err);
@@ -46,6 +48,8 @@ socket.on('updateUserList', function(users) {
   jQuery('#users').html(ol);
 });
 
+
+
 socket.on('newMessage', function(m) {
   var params = jQuery.deparam(window.location.search);
 
@@ -56,27 +60,34 @@ socket.on('newMessage', function(m) {
     from: m.from,
     createdAt: formattedTime
   });
-
-  // var list = jQuery('#message').children('li:last-child');
-  // console.log(`m.from ${m.from}`);
-  // console.log(`params.name ${params.name}`);
-  // if(m.from === params.name) {
-  //   list.css({'float':'right', 'padding' : '10px'});
-  // }
-  // if(m.from === 'Admin') {
-  //   list.css({'display':'table', 'margin' : '0 auto'});
-  // }
-
   jQuery('#messages').append(html);
-  scrollToBottom();
 
-  // var formattedTime = moment(m.createdAt).format('h:mm a');
-  // console.log('newMessage', m );
-  // var li = jQuery('<li></li>');
-  // li.text(`${m.from} ${formattedTime}: ${m.text}`);
-  //
-  // jQuery('#messages').append(li);
+
+  console.log(`m.from ${m.from}`);
+  console.log(`params.name ${params.name}`);
+  console.log(`euqal: ${m.from === params.name}`)
+  console.log(`The list is ${list}`);
+  var list = jQuery('#messages').children('li:last-child');
+  if (m.from === params.name) {
+      list.css({'float':'right', 'padding':'10px',
+       'background-color': 'green', 'border-radius': '20px',
+      });
+  }
+
+  if (m.from === 'Admin') {
+    list.css({'display':'table', 'margin':'0 auto'});
+  }
+
+  if(m.from !== params.name && m.from !== 'Admin') {
+    list.css({'float':'left', 'padding':'10px',
+     'background-color': 'blue', 'border-radius': '20px',
+    });
+  }
+
+  scrollToBottom();
 });
+
+
 
 socket.on('newLocationMessage', function(message){
   var formattedTime = moment(message.createdAt).format('h:mm a');
@@ -106,16 +117,10 @@ socket.on('newLocationMessage', function(message){
 //   console.log("Got it!", data);
 // });
 
-// Show on personalScreen
-socket.on('personalMessage', function(message){
-  var formattedTime = moment(message.createdAt).format('h:mm a');
-  var template = jQuery('#personal-message-template').html();
-  var html = Mustache.render(template, {
-    text: message.text,
-    createdAt: formattedTime
-  });
-  jQuery('#messages').append(html);
-});
+
+
+
+
 
 
 

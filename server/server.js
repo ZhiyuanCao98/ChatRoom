@@ -32,6 +32,10 @@ io.on('connection', (socket) => {
       callback('Name and Room can not be null or Admin');
     }
 
+    if(users.getUserByName(params.name)) {
+      callback('The name has been taken');
+    }
+
     socket.join(params.room);
     // add user into the list
     users.removeUser(socket.id);
