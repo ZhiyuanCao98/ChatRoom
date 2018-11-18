@@ -18,6 +18,15 @@ function scrollToBottom () {
 
 socket.on('connect', function() {
   console.log('Connected to server');
+  var params = jQuery.deparam(window.location.search);
+  socket.emit('join', params, function(err) {
+    if (err) {
+      alert(err);
+      window.location.href = '/';
+    } else {
+      console.log('No error');
+    }
+  });
 });
 
 
@@ -26,8 +35,20 @@ socket.on('disconnect', function() {
   console.log('Disconnect from server');
 });
 
+socket.on('updateUserList', function(users) {
+  var ol = jQuery('<ol></ol>');
+
+  users.forEach(function (user) {
+    ol.append(jQuery('<li></li>').text(user));
+  });
+  var onlineNum = '(' + users.length + ')';
+  jQuery('#onlineNum').html(onlineNum);
+  jQuery('#users').html(ol);
+});
 
 socket.on('newMessage', function(m) {
+  var params = jQuery.deparam(window.location.search);
+
   var formattedTime = moment(m.createdAt).format('h:mm a');
   var template = jQuery('#message-template').html();
   var html = Mustache.render(template, {
@@ -35,6 +56,16 @@ socket.on('newMessage', function(m) {
     from: m.from,
     createdAt: formattedTime
   });
+
+  // var list = jQuery('#message').children('li:last-child');
+  // console.log(`m.from ${m.from}`);
+  // console.log(`params.name ${params.name}`);
+  // if(m.from === params.name) {
+  //   list.css({'float':'right', 'padding' : '10px'});
+  // }
+  // if(m.from === 'Admin') {
+  //   list.css({'display':'table', 'margin' : '0 auto'});
+  // }
 
   jQuery('#messages').append(html);
   scrollToBottom();
