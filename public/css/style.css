@@ -200,3 +200,25 @@ button:disabled {
 #users ol {
     text-align: center
 }
+
+@keyframes typing {
+	from { width: 0 }
+}
+
+@keyframes caret {
+	50% { border-right-color: transparent; }
+}
+
+#greeting {
+  background: linear-gradient(to right, red, orange, yellow, green, cyan, blue, violet);
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+	font: bold 200% Consolas, Monaco, monospace;
+	width: 17ch;
+	white-space: nowrap;
+	overflow: hidden;
+  	border-right: .05em solid;
+	animation: typing 8s steps(17),
+	           caret 1s steps(1) infinite;
+
+}

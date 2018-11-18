@@ -69,18 +69,18 @@ socket.on('newMessage', function(m) {
   console.log(`The list is ${list}`);
   var list = jQuery('#messages').children('li:last-child');
   if (m.from === params.name) {
-      list.css({'float':'right', 'padding':'10px',
-       'background-color': 'green', 'border-radius': '20px',
+      list.css({'float':'right', 'padding':'10px', 'margin' : '5px',
+       'background-color': '#66FF33', 'border-radius': '10px',
       });
   }
 
   if (m.from === 'Admin') {
-    list.css({'display':'table', 'margin':'0 auto'});
+    list.css({'display':'table', 'margin':'0 auto', 'color' : '#9900FF'});
   }
 
   if(m.from !== params.name && m.from !== 'Admin') {
-    list.css({'float':'left', 'padding':'10px',
-     'background-color': 'blue', 'border-radius': '20px',
+    list.css({'float':'left', 'padding':'10px', 'margin' : '5px',
+     'background-color': '#6699FF', 'border-radius': '10px',
     });
   }
 
