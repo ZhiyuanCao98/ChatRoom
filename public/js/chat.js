@@ -89,15 +89,32 @@ socket.on('newMessage', function(m) {
 
 
 
-socket.on('newLocationMessage', function(message){
-  var formattedTime = moment(message.createdAt).format('h:mm a');
+socket.on('newLocationMessage', function(m){
+  var params = jQuery.deparam(window.location.search);
+  var formattedTime = moment(m.createdAt).format('h:mm a');
   var template = jQuery('#location-message-template').html();
   var html = Mustache.render(template, {
-    from: message.from,
+    from: m.from,
     createdAt: formattedTime,
-    url: message.url
+    url: m.url
   });
   jQuery('#messages').append(html);
+  var list = jQuery('#messages').children('li:last-child');
+  if (m.from === params.name) {
+      list.css({'float':'right', 'padding':'10px', 'margin' : '5px',
+       'background-color': '#66FF33', 'border-radius': '10px',
+      });
+  }
+
+  if (m.from === 'Admin') {
+    list.css({'display':'table', 'margin':'0 auto', 'color' : '#9900FF'});
+  }
+
+  if(m.from !== params.name && m.from !== 'Admin') {
+    list.css({'float':'left', 'padding':'10px', 'margin' : '5px',
+     'background-color': '#6699FF', 'border-radius': '10px',
+    });
+  }
   scrollToBottom();
   // var formattedTime = moment(message.createdAt).format('h:mm a');
   // console.log('newMessage', m );
